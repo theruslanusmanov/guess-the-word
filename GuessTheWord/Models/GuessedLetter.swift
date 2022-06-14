@@ -33,6 +33,15 @@
 import Foundation
 import SwiftUI
 
+enum LetterStatus: String {
+  case unknown = "Unknown"
+  case notInWord = "Not in Word"
+  case notInPosition = "Not in Position"
+  case inPosition = "Correct and In Position"
+}
+
 struct GuessedLetter: Identifiable {
-  var id: ObjectIdentifier
+  var id = UUID()
+  var letter: String
+  var status: LetterStatus = .unknown
 }
