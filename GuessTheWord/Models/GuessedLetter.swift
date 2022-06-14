@@ -44,4 +44,16 @@ struct GuessedLetter: Identifiable {
   var id = UUID()
   var letter: String
   var status: LetterStatus = .unknown
+  var statusColor: Color {
+    switch status {
+    case .unknown:
+      return .primary
+    case .notInWord:
+      return .gray
+    case .notInPosition:
+      return .yellow
+    case .inPosition:
+      return .green
+    }
+  }
 }
