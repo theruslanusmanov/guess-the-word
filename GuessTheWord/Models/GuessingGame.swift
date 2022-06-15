@@ -43,7 +43,7 @@ enum GameState {
 
 class GuessingGame: ObservableObject {
   let wordLength = 5
-  let maxGuess = 6
+  let maxGuesses = 6
   var dictionary: Dictionary
   var status: GameState = .initializing
   @Published var targetWord: String
@@ -132,7 +132,7 @@ class GuessingGame: ObservableObject {
       return
     }
     
-    if currentGuess < maxGuess - 1 {
+    if currentGuess < maxGuesses - 1 {
       guesses.append(Guess())
       currentGuess += 1
     } else {

@@ -36,9 +36,24 @@ import SwiftUI
 struct GameBoardView: View {
   @ObservedObject var game: GuessingGame
   @State var showResult = false
+  
+  var unusedGuesses: Int {
+    let remainingGuesses = game.maxGuesses - game.guesses.count
+    if remainingGuesses < 0 {
+      return 0
+    }
+    return remainingGuesses
+  }
 
   var body: some View {
-    Text("Placeholder")
+    VStack {
+      ForEach($game.guesses) { guess in
+        CurrentGuessView(guess: guess, wordLength: game.wordLength)
+      }
+      ForEach(0..<unusedGuesses, id: \.self) { _ in
+        CurrentGuessView(guess: .constant(Guess()), wordLength: game.wordLength)
+      }
+    }
     .sheet(isPresented: $showResult) {
       GameResultView(game: game)
     }
@@ -48,6 +63,6 @@ struct GameBoardView: View {
 
 struct GameBoardView_Previews: PreviewProvider {
   static var previews: some View {
-    GameBoardView(game: GuessingGame())
+    GameBoardView(game: GuessingGame.inProgressGame())
   }
 }
