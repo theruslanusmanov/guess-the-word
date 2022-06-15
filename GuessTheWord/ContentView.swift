@@ -34,6 +34,7 @@ import SwiftUI
 
 struct ContentView: View {
   @StateObject var game = GuessingGame()
+  @State private var showResults = false
   @State private var showStats = false
 
   var body: some View {
@@ -48,6 +49,16 @@ struct ContentView: View {
         showStats: $showStats,
         game: game
       )
+    }
+    .sheet(isPresented: $showResults) {
+      GameResultView(game: game)
+    }
+    .onChange(of: game.status) { newStatus in
+      if newStatus == .won || newStatus == .lost {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+          showResults = true
+        }
+      }
     }
     .frame(alignment: .top)
     .padding([.bottom], 10)
