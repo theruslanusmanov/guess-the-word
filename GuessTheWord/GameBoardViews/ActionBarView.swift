@@ -34,18 +34,19 @@ import SwiftUI
 
 struct ActionBarView: View {
   @Binding var showStats: Bool
+  @ObservedObject var game: GuessingGame
 
   var body: some View {
     HStack {
       Spacer()
       Button {
-        // New game action
+        game.newGame()
       } label: {
         Image(systemName: "plus")
           .imageScale(.large)
           .accessibilityLabel("New Game")
       }
-      .disabled(true)
+      .disabled(game.status == .inprogress || game.status == .new)
     }.padding(7)
   }
 }
@@ -53,7 +54,8 @@ struct ActionBarView: View {
 struct ActionBarView_Previews: PreviewProvider {
   static var previews: some View {
     ActionBarView(
-      showStats: .constant(false)
+      showStats: .constant(false),
+      game: GuessingGame.inProgressGame()
     )
   }
 }

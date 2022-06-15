@@ -44,7 +44,10 @@ struct ContentView: View {
       GameBoardView(game: game)
       KeyboardView(game: game)
         .padding(5)
-      ActionBarView(showStats: $showStats)
+      ActionBarView(
+        showStats: $showStats,
+        game: game
+      )
     }
     .frame(alignment: .top)
     .padding([.bottom], 10)

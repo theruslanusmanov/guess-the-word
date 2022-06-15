@@ -138,8 +138,18 @@ class GuessingGame: ObservableObject {
     } else {
       status = .lost
     }
+  }
+  
+  func newGame() {
+    let totalWords = dictionary.commonWords.count
+    let randomWord = Int.random(in: 0..<totalWords)
+    targetWord = dictionary.commonWords[randomWord]
+    print("Selected word: \(targetWord)")
     
-    
+    currentGuess = 0
+    guesses = []
+    guesses.append(Guess())
+    status = .new
   }
 }
 
