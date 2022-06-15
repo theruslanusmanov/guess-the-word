@@ -63,6 +63,40 @@ class GuessingGame: ObservableObject {
     guesses.append(Guess())
     status = .new
   }
+  
+  func addKey(letter: String) {
+    if status == .new {
+      status = .inprogress
+    }
+    guard status == .inprogress else {
+      return
+    }
+    
+    switch letter {
+    case "<":
+      deleteLetter()
+    default:
+      if guesses[currentGuess].word.count < wordLength {
+        let newLetter = GuessedLetter(letter: letter)
+        guesses[currentGuess].word.append(newLetter)
+      }
+    }
+  }
+  
+  func deleteLetter() {
+    let currentLetters = guesses[currentGuess].word.count
+    guard currentLetters > 0 else { return }
+    guesses[currentGuess].word.remove(at: currentLetters - 1)
+  }
+  
+  func checkGuess() {
+    guard guesses[currentGuess].word.count == wordLength else { return }
+    
+    if !dictionary.isValidWord(guesses[currentGuess].letters) {
+      guesses[currentGuess].status = .invalidWord
+      return
+    }
+  }
 }
 
 // extension GuessingGame {
