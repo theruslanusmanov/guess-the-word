@@ -96,6 +96,20 @@ class GuessingGame: ObservableObject {
       guesses[currentGuess].status = .invalidWord
       return
     }
+    
+    guesses[currentGuess].status = .complete
+    var targetLettersRemaining = Array(targetWord)
+    for index in guesses[currentGuess].word.indices {
+      let stringIndex = targetWord.index(targetWord.startIndex, offsetBy: index)
+      let letterAtIndex = String(targetWord[stringIndex])
+      if letterAtIndex == guesses[currentGuess].word[index].letter {
+        guesses[currentGuess].word[index].status = .inPosition
+        if let letterIndex =
+            targetLettersRemaining.firstIndex(of: Character(letterAtIndex)) {
+          targetLettersRemaining.remove(at: letterIndex)
+        }
+      }
+    }
   }
 }
 
