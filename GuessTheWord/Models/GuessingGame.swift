@@ -110,6 +110,20 @@ class GuessingGame: ObservableObject {
         }
       }
     }
+    
+    for index in guesses[currentGuess].word.indices
+      .filter({ guesses[currentGuess].word[$0].status == .unknown }) {
+        let letterAtIndex = guesses[currentGuess].word[index].letter
+        var letterStatus = LetterStatus.notInWord
+        if targetWord.contains(letterAtIndex) {
+          if let guessedLetterIndex =
+              targetLettersRemaining.firstIndex(of: Character(letterAtIndex)) {
+            letterStatus = .notInPosition
+            targetLettersRemaining.remove(at: guessedLetterIndex)
+          }
+        }
+        guesses[currentGuess].word[index].status = letterStatus
+      }
   }
 }
 
