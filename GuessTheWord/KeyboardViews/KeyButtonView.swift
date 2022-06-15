@@ -38,7 +38,7 @@ struct KeyButtonView: View {
 
   var body: some View {
     Button {
-      // Button action
+      game.addKey(letter: key)
     } label: {
       switch key {
       case "<":

@@ -75,6 +75,8 @@ class GuessingGame: ObservableObject {
     switch letter {
     case "<":
       deleteLetter()
+    case ">":
+      checkGuess()
     default:
       if guesses[currentGuess].word.count < wordLength {
         let newLetter = GuessedLetter(letter: letter)
@@ -124,133 +126,147 @@ class GuessingGame: ObservableObject {
         }
         guesses[currentGuess].word[index].status = letterStatus
       }
+    
+    if targetWord == guesses[currentGuess].letters {
+      status = .won
+      return
+    }
+    
+    if currentGuess < maxGuess - 1 {
+      guesses.append(Guess())
+      currentGuess += 1
+    } else {
+      status = .lost
+    }
+    
+    
   }
 }
 
-// extension GuessingGame {
-//  convenience init(word: String) {
-//    self.init()
-//    self.targetWord = word
-//  }
-//
-//  static func inProgressGame() -> GuessingGame {
-//    let game = GuessingGame(word: "SMILE")
-//    game.addKey(letter: "S")
-//    game.addKey(letter: "T")
-//    game.addKey(letter: "O")
-//    game.addKey(letter: "L")
-//    game.addKey(letter: "E")
-//    game.addKey(letter: ">")
-//
-//    game.addKey(letter: "M")
-//    game.addKey(letter: "I")
-//    game.addKey(letter: "L")
-//    game.addKey(letter: "E")
-//    game.addKey(letter: "S")
-//    game.addKey(letter: ">")
-//
-//    game.addKey(letter: "S")
-//    return game
-//  }
-//
-//  static func wonGame() -> GuessingGame {
-//    let game = GuessingGame(word: "SMILE")
-//    game.addKey(letter: "S")
-//    game.addKey(letter: "T")
-//    game.addKey(letter: "O")
-//    game.addKey(letter: "L")
-//    game.addKey(letter: "E")
-//    game.addKey(letter: ">")
-//
-//    game.addKey(letter: "M")
-//    game.addKey(letter: "I")
-//    game.addKey(letter: "L")
-//    game.addKey(letter: "E")
-//    game.addKey(letter: "S")
-//    game.addKey(letter: ">")
-//
-//    game.addKey(letter: "S")
-//    game.addKey(letter: "M")
-//    game.addKey(letter: "I")
-//    game.addKey(letter: "L")
-//    game.addKey(letter: "E")
-//    game.addKey(letter: ">")
-//
-//    return game
-//  }
-//
-//  static func lostGame() -> GuessingGame {
-//    let game = GuessingGame(word: "SMILE")
-//
-//    game.addKey(letter: "P")
-//    game.addKey(letter: "I")
-//    game.addKey(letter: "A")
-//    game.addKey(letter: "N")
-//    game.addKey(letter: "O")
-//    game.addKey(letter: ">")
-//
-//    game.addKey(letter: "S")
-//    game.addKey(letter: "T")
-//    game.addKey(letter: "O")
-//    game.addKey(letter: "L")
-//    game.addKey(letter: "E")
-//    game.addKey(letter: ">")
-//
-//    game.addKey(letter: "S")
-//    game.addKey(letter: "P")
-//    game.addKey(letter: "O")
-//    game.addKey(letter: "I")
-//    game.addKey(letter: "L")
-//    game.addKey(letter: ">")
-//
-//    game.addKey(letter: "S")
-//    game.addKey(letter: "T")
-//    game.addKey(letter: "A")
-//    game.addKey(letter: "R")
-//    game.addKey(letter: "E")
-//    game.addKey(letter: ">")
-//
-//    game.addKey(letter: "M")
-//    game.addKey(letter: "I")
-//    game.addKey(letter: "L")
-//    game.addKey(letter: "E")
-//    game.addKey(letter: "S")
-//    game.addKey(letter: ">")
-//
-//    game.addKey(letter: "S")
-//    game.addKey(letter: "M")
-//    game.addKey(letter: "E")
-//    game.addKey(letter: "L")
-//    game.addKey(letter: "L")
-//    game.addKey(letter: ">")
-//
-//    return game
-//  }
-//
-// static func complexGame() -> GuessingGame {
-//   let game = GuessingGame(word: "THEME")
-//
-//   game.addKey(letter: "E")
-//   game.addKey(letter: "E")
-//   game.addKey(letter: "R")
-//   game.addKey(letter: "I")
-//   game.addKey(letter: "E")
-//   game.addKey(letter: ">")
-//
-//   game.addKey(letter: "S")
-//   game.addKey(letter: "T")
-//   game.addKey(letter: "E")
-//   game.addKey(letter: "E")
-//   game.addKey(letter: "L")
-//   game.addKey(letter: ">")
-//
-//   game.addKey(letter: "T")
-//   game.addKey(letter: "H")
-//   game.addKey(letter: "E")
-//   game.addKey(letter: "M")
-//   game.addKey(letter: "E")
-//   game.addKey(letter: ">")
-//
-//   return game
-//  }
-// }
+ extension GuessingGame {
+  convenience init(word: String) {
+    self.init()
+    self.targetWord = word
+  }
+
+  static func inProgressGame() -> GuessingGame {
+    let game = GuessingGame(word: "SMILE")
+    game.addKey(letter: "S")
+    game.addKey(letter: "T")
+    game.addKey(letter: "O")
+    game.addKey(letter: "L")
+    game.addKey(letter: "E")
+    game.addKey(letter: ">")
+
+    game.addKey(letter: "M")
+    game.addKey(letter: "I")
+    game.addKey(letter: "L")
+    game.addKey(letter: "E")
+    game.addKey(letter: "S")
+    game.addKey(letter: ">")
+
+    game.addKey(letter: "S")
+    return game
+  }
+
+  static func wonGame() -> GuessingGame {
+    let game = GuessingGame(word: "SMILE")
+    game.addKey(letter: "S")
+    game.addKey(letter: "T")
+    game.addKey(letter: "O")
+    game.addKey(letter: "L")
+    game.addKey(letter: "E")
+    game.addKey(letter: ">")
+
+    game.addKey(letter: "M")
+    game.addKey(letter: "I")
+    game.addKey(letter: "L")
+    game.addKey(letter: "E")
+    game.addKey(letter: "S")
+    game.addKey(letter: ">")
+
+    game.addKey(letter: "S")
+    game.addKey(letter: "M")
+    game.addKey(letter: "I")
+    game.addKey(letter: "L")
+    game.addKey(letter: "E")
+    game.addKey(letter: ">")
+
+    return game
+  }
+
+  static func lostGame() -> GuessingGame {
+    let game = GuessingGame(word: "SMILE")
+
+    game.addKey(letter: "P")
+    game.addKey(letter: "I")
+    game.addKey(letter: "A")
+    game.addKey(letter: "N")
+    game.addKey(letter: "O")
+    game.addKey(letter: ">")
+
+    game.addKey(letter: "S")
+    game.addKey(letter: "T")
+    game.addKey(letter: "O")
+    game.addKey(letter: "L")
+    game.addKey(letter: "E")
+    game.addKey(letter: ">")
+
+    game.addKey(letter: "S")
+    game.addKey(letter: "P")
+    game.addKey(letter: "O")
+    game.addKey(letter: "I")
+    game.addKey(letter: "L")
+    game.addKey(letter: ">")
+
+    game.addKey(letter: "S")
+    game.addKey(letter: "T")
+    game.addKey(letter: "A")
+    game.addKey(letter: "R")
+    game.addKey(letter: "E")
+    game.addKey(letter: ">")
+
+    game.addKey(letter: "M")
+    game.addKey(letter: "I")
+    game.addKey(letter: "L")
+    game.addKey(letter: "E")
+    game.addKey(letter: "S")
+    game.addKey(letter: ">")
+
+    game.addKey(letter: "S")
+    game.addKey(letter: "M")
+    game.addKey(letter: "E")
+    game.addKey(letter: "L")
+    game.addKey(letter: "L")
+    game.addKey(letter: ">")
+
+    return game
+  }
+
+ static func complexGame() -> GuessingGame {
+   let game = GuessingGame(word: "THEME")
+
+   game.addKey(letter: "E")
+   game.addKey(letter: "E")
+   game.addKey(letter: "R")
+   game.addKey(letter: "I")
+   game.addKey(letter: "E")
+   game.addKey(letter: ">")
+
+   game.addKey(letter: "S")
+   game.addKey(letter: "T")
+   game.addKey(letter: "E")
+   game.addKey(letter: "E")
+   game.addKey(letter: "L")
+   game.addKey(letter: ">")
+
+   game.addKey(letter: "T")
+   game.addKey(letter: "H")
+   game.addKey(letter: "E")
+   game.addKey(letter: "M")
+   game.addKey(letter: "E")
+   game.addKey(letter: ">")
+
+   return game
+  }
+ }
