@@ -33,7 +33,36 @@
 import Foundation
 import SwiftUI
 
+enum GameState {
+  case initializing
+  case new
+  case inprogress
+  case won
+  case lost
+}
+
 class GuessingGame: ObservableObject {
+  let wordLength = 5
+  let maxGuess = 6
+  var dictionary: Dictionary
+  var status: GameState = .initializing
+  @Published var targetWord: String
+  @Published var currentGuess = 0
+  @Published var guesses: [Guess]
+  
+  init() {
+    dictionary = Dictionary(length: wordLength)
+    let totalWords = dictionary.commonWords.count
+    let randomWord = Int.random(in: 0..<totalWords)
+    let word = dictionary.commonWords[randomWord]
+    targetWord = word
+    #if DEBUG
+    print("selected word: \(word)")
+    #endif
+    guesses = .init()
+    guesses.append(Guess())
+    status = .new
+  }
 }
 
 // extension GuessingGame {
