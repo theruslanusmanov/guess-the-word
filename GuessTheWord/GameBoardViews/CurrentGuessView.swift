@@ -50,6 +50,7 @@ struct CurrentGuessView: View {
         ForEach(guess.word.indices, id: \.self) { index in
           let letter = guess.word[index]
           GuessBoxView(letter: letter, size: width, index: index)
+            .accessibilityLabel(letter.status == .unknown ? letter.letter : "\(letter.letter) \(letter.status.rawValue)")
         }
         ForEach(0..<unguessedLetters, id: \.self) { _ in
           EmptyBoxView(size: width)
