@@ -151,6 +151,49 @@ class GuessingGame: ObservableObject {
     guesses.append(Guess())
     status = .new
   }
+  
+  func statusForLetter(letter: String) -> LetterStatus {
+    if letter == "<" || letter == ">" {
+      return .unknown
+    }
+    
+    let finishedGuesses = guesses.filter { $0.status == .complete }
+    let guessedLetters =
+    finishedGuesses.reduce([LetterStatus]()) { partialResult, guess in
+      let guessStatuses =
+      guess.word.filter { $0.letter == letter }.map { $0.status }
+      var currentStatuses = partialResult
+      currentStatuses.append(contentsOf: guessStatuses)
+      return currentStatuses
+    }
+    
+    if guessedLetters.contains(.inPosition) {
+      return .inPosition
+    }
+    if guessedLetters.contains(.notInPosition) {
+      return .notInPosition
+    }
+    if guessedLetters.contains(.notInWord) {
+      return .notInWord
+    }
+    
+    return .unknown
+  }
+  
+  func colorForKey(key: String) -> Color {
+    let status = statusForLetter(letter: key)
+    
+    switch status {
+    case .unknown:
+      return Color(UIColor.systemBackground)
+    case .inPosition:
+      return Color.green
+    case .notInPosition:
+      return Color.yellow
+    case .notInWord:
+      return Color.gray.opacity(0.67)
+    }
+  }
 }
 
  extension GuessingGame {

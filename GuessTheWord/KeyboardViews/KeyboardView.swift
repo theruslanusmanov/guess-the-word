@@ -44,6 +44,9 @@ struct KeyboardView: View {
           let keyArray = line.map { String($0) }
           ForEach(keyArray, id: \.self) { key in
             KeyButtonView(game: game, key: key)
+              .background(
+                game.colorForKey(key: key)
+              )
           }
         }
       }
