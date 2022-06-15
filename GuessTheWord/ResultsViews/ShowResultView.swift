@@ -37,14 +37,23 @@ struct ShowResultView: View {
   let yellowBox = "\u{1F7E8}"
   let greenBox = "\u{1F7E9}"
   let grayBox = "\u{2B1B}"
-
+  
   var body: some View {
-    Text("Placeholder")
+    Group {
+      if let text = game.shareResultText {
+        Text(text)
+      } else {
+        Text("Game Not Complete")
+      }
+    }
+    .font(.title3)
+    .multilineTextAlignment(.center)
   }
 }
 
+
 struct ShowResultView_Previews: PreviewProvider {
   static var previews: some View {
-    ShowResultView(game: GuessingGame())
+    ShowResultView(game: GuessingGame.wonGame())
   }
 }
