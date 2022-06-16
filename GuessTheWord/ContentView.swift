@@ -33,6 +33,7 @@
 import SwiftUI
 
 struct ContentView: View {
+  @Environment(\.scenePhase) var scenePhase
   @StateObject var game = GuessingGame()
   @State private var showResults = false
   @State private var showStats = false
@@ -61,6 +62,16 @@ struct ContentView: View {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
           showResults = true
         }
+      }
+    }
+    .onChange(of: scenePhase) { newPhase in
+      if newPhase == .active {
+        if game.status == .new && !game.gameState.isEmpty {
+          game.loadState()
+        }
+      }
+      if newPhase == .background || newPhase == .inactive {
+        game.saveState()
       }
     }
     .frame(alignment: .top)

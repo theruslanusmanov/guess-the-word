@@ -45,11 +45,18 @@ class GuessingGame: ObservableObject {
   let wordLength = 5
   let maxGuesses = 6
   var dictionary: Dictionary
-  var status: GameState = .initializing
+  var status: GameState = .initializing {
+    didSet {
+      if status == .lost || status == .won {
+        gameState = ""
+      }
+    }
+  }
   @Published var targetWord: String
   @Published var currentGuess = 0
   @Published var guesses: [Guess]
   @AppStorage("GameRecord") var gameRecord = ""
+  @AppStorage("GameState") var gameState = ""
   
   
   init() {
@@ -232,6 +239,32 @@ class GuessingGame: ObservableObject {
     }
     
     return text + statusString
+  }
+  
+  func saveState() {
+    let guessList =
+    guesses.map { $0.status == .complete ? "\($0.letters)>" : $0.letters }
+    let guessedKeys = guessList.joined()
+    gameState = "\(targetWord)|\(guessedKeys)"
+    print("Saving current game state: \(gameState)")
+  }
+  
+  func loadState() {
+    print("Loading game state: \(gameState)")
+    currentGuess = 0
+    guesses = .init()
+    guesses.append(Guess())
+    status = .inprogress
+    
+    let stateParts = gameState.split(separator: "|")
+    targetWord = String(stateParts[0])
+    guard stateParts.count > 1 else { return }
+    let guessList = String(stateParts[1])
+    let letters = Array(guessList)
+    for letter in letters {
+      let newGuess = String(letter)
+      addKey(letter: newGuess)
+    }
   }
 }
 
