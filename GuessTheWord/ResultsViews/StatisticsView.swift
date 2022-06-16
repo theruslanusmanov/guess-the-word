@@ -36,7 +36,16 @@ struct StatisticsView: View {
   var stats: GameStatistics
 
   var body: some View {
-    Text("Placeholder")
+    VStack(spacing: 15.0) {
+      VStack {
+        Text("Game Statistics")
+          .font(.title)
+        Text("Played: \(stats.gamesPlayed) ") +
+            Text("Won: \(stats.gamesWon) (\(stats.percentageWon) %)")
+            Text("Win Streak: \(stats.currentWinStreak) ") +
+            Text("Max Streak: \(stats.maxWinStreak)")
+      }
+    }
   }
 }
 
