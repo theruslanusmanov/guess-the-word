@@ -49,6 +49,8 @@ class GuessingGame: ObservableObject {
   @Published var targetWord: String
   @Published var currentGuess = 0
   @Published var guesses: [Guess]
+  @AppStorage("GameRecord") var gameRecord = ""
+  
   
   init() {
     dictionary = Dictionary(length: wordLength)
@@ -129,6 +131,7 @@ class GuessingGame: ObservableObject {
     
     if targetWord == guesses[currentGuess].letters {
       status = .won
+      gameRecord += "\(currentGuess + 1)"
       return
     }
     
@@ -137,6 +140,7 @@ class GuessingGame: ObservableObject {
       currentGuess += 1
     } else {
       status = .lost
+      gameRecord += "L"
     }
   }
   
