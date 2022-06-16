@@ -48,6 +48,9 @@ struct GameResultView: View {
       }
       Text("The word was \(game.targetWord).")
           .font(.title2)
+      VStack {
+        ShowResultView(game: game)
+      }
     }
   }
 }
