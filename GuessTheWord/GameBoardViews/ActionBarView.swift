@@ -38,6 +38,13 @@ struct ActionBarView: View {
 
   var body: some View {
     HStack {
+      Button {
+        showStats = true
+      } label: {
+        Image(systemName: "chart.bar")
+          .imageScale(.large)
+          .accessibilityLabel("Show Stats")
+      }
       Spacer()
       Button {
         game.newGame()

@@ -53,6 +53,9 @@ struct ContentView: View {
     .sheet(isPresented: $showResults) {
       GameResultView(game: game)
     }
+    .sheet(isPresented: $showStats) {
+      StatisticsView(stats: GameStatistics(gameRecord: game.gameRecord))
+    }
     .onChange(of: game.status) { newStatus in
       if newStatus == .won || newStatus == .lost {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
